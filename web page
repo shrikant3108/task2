@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexPlanet - Contact Form</title>
+    <style>
+        :root {
+            --primary-color: #2a7d7d;
+            --secondary-color: #5ea3a3;
+            --bg-color: #f8fbfb;
+            --text-color: #333;
+            --error-color: #e74c3c;
+            --success-color: #27ae60;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        /* Form Styles */
+        .form-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .form-group.error input, 
+        .form-group.error textarea, 
+        .form-group.error select {
+            border-color: var(--error-color);
+        }
+        
+        .form-group.error .error-message {
+            display: block;
+        }
+        
+        .form-group.success input,
+        .form-group.success textarea,
+        .form-group.success select {
+            border-color: var(--success-color);
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+                
+        /* To-Do List Styles */
+        .task-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .task-input {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .task-input input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        .task-list {
+            list-style-type: none;
+        }
+        
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .task-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .task-actions button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 14px;
+            padding: 5px;
+        }
+        
+        .task-actions button:hover {
+            color: var(--secondary-color);
+        }
+        
+        .task-complete {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+        
+        /* Image Gallery Styles */
+        .gallery-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .gallery-controls {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .gallery-controls input {
+            flex: 1;
+            margin-right: 10px;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            height: 150px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .gallery-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .gallery-item:hover .remove-btn {
+            opacity: 1;
+        }
+        
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">ApexPlanet Software</div>
+        </header>
+        
+        <div class="grid-container">
+            <!-- Contact Form Section -->
+            <div class="form-section">
+                <h2>Contact Us</h2>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your full name">
+                        <div class="error-message" id="nameError">Please enter your name</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address">
+                        <div class="error-message" id="emailError">Please enter a valid email address</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                        <div class="error-message" id="phoneError">Please enter a valid phone number</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject *</label>
+                        <select id="subject" name="subject">
+                            <option value="">Select a subject</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="support">Technical Support</option>
+                            <option value="billing">Billing Question</option>
+                            <option value="feedback">Feedback</option>
+                        </select>
+                        <div class="error-message" id="subjectError">Please select a subject</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message *</label>
+                        <textarea id="message" name="message" placeholder="Enter your message"></textarea>
+                        <div class="error-message" id="messageError">Please enter your message</div>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn">Submit</button>
+                </form>
+            </div>
+            
+            <!-- To-Do List Section -->
+            <div class="task-container">
+                <h2>Task Manager</h2>
+                <div class="task-input">
+                    <input type="text" id="newTask" placeholder="Add a new task...">
+                    <button id="addTaskBtn">Add Task</button>
+                </div>
+                <ul class="task-list" id="taskList">
+                    <!-- Tasks will be added here dynamically -->
+                </ul>
+            </div>
+            
+            <!-- Image Gallery Section -->
+            <div class="gallery-container">
+                <h2>Image Gallery</h2>
+                <div class="gallery-controls">
+                    <input type="text" id="imageUrl" placeholder="Enter image URL">
+                    <button id="addImageBtn">Add Image</button>
+                </div>
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Images will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form Validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Reset previous errors
+                const formGroups = document.querySelectorAll('.form-group');
+                formGroups.forEach(group => {
+                    group.classList.remove('error');
+                    group.classList.remove('success');
+                });
+                
+                let isValid = true;
+                
+                // Validate name
+                const name = document.getElementById('name').value.trim();
+                if (name === '') {
+                    showError('name', 'Please enter your name');
+                    isValid = false;
+                } else {
+                    showSuccess('name');
+                }
+                
+                // Validate email
+                const email = document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email === '') {
+                    showError('email', 'Please enter your email address');
+                    isValid = false;
+                } else if (!emailRegex.test(email)) {
+                    showError('email', 'Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    showSuccess('email');
+                }
+                
+                // Validate phone (optional)
+                const phone = document.getElementById('phone').value.trim();
+                if (phone !== '') {
+                    const phoneRegex = /^\d{10}$/;
+                    if (!phoneRegex.test(phone.replace(/\D/g, ''))) {
+                        showError('phone', 'Please enter a valid 10-digit phone number');
+                        isValid = false;
+                    } else {
+                        showSuccess('phone');
+                    }
+                }
+                
+                // Validate subject
+                const subject = document.getElementById('subject').value;
+                if (subject === '') {
+                    showError('subject', 'Please select a subject');
+                    isValid = false;
+                } else {
+                    showSuccess('subject');
+                }
+                
+                // Validate message
+                const message = document.getElementById('message').value.trim();
+                if (message === '') {
+                    showError('message', 'Please enter your message');
+                    isValid = false;
+                } else if (message.length < 10) {
+                    showError('message', 'Your message should be at least 10 characters');
+                    isValid = false;
+                } else {
+                    showSuccess('message');
+                }
+                
+                // If form is valid, submit
+                if (isValid) {
+                    alert('Form submitted successfully!');
+                    contactForm.reset();
+                    formGroups.forEach(group => {
+                        group.classList.remove('success');
+                    });
+                }
+            });
+            
+            function showError(inputId, message) {
+                const formGroup = document.getElementById(inputId).parentElement;
+                const errorElement = document.getElementById(inputId + 'Error');
+                formGroup.classList.add('error');
+                errorElement.textContent = message;
+            }
+            
+            function showSuccess(inputId) {
+                const formGroup = document.getElementById(inputId).parentElement;
+                formGroup.classList.add('success');
+            }
+            
+            // Task Manager Functionality
+            const taskInput = document.getElementById('newTask');
+            const addTaskBtn = document.getElementById('addTaskBtn');
+            const taskList = document.getElementById('taskList');
+            
+            addTaskBtn.addEventListener('click', addTask);
+            
+            taskInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTask();
+                }
+            });
+            
+            function addTask() {
+                const taskText = taskInput.value.trim();
+                
+                if (taskText !== '') {
+                    // Create task item
+                    const li = document.createElement('li');
+                    li.className = 'task-item';
+                    
+                    // Create task text
+                    const taskTextSpan = document.createElement('span');
+                    taskTextSpan.className = 'task-text';
+                    taskTextSpan.textContent = taskText;
+                    
+                    // Create task actions
+                    const actionsDiv = document.createElement('div');
+                    actionsDiv.className = 'task-actions';
+                    
+                    const completeBtn = document.createElement('button');
+                    completeBtn.textContent = 'Complete';
+                    completeBtn.addEventListener('click', function() {
+                        taskTextSpan.classList.toggle('task-complete');
+                        completeBtn.textContent = taskTextSpan.classList.contains('task-complete') ? 'Undo' : 'Complete';
+                    });
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.addEventListener('click', function() {
+                        li.remove();
+                    });
+                    
+                    actionsDiv.appendChild(completeBtn);
+                    actionsDiv.appendChild(deleteBtn);
+                    
+                    li.appendChild(taskTextSpan);
+                    li.appendChild(actionsDiv);
+                    
+                    taskList.appendChild(li);
+                    taskInput.value = '';
+                }
+            }
+            
+            // Image Gallery Functionality
+            const imageInput = document.getElementById('imageUrl');
+            const addImageBtn = document.getElementById('addImageBtn');
+            const galleryGrid = document.getElementById('galleryGrid');
+            
+            // Sample images to start with
+            const sampleImages = [
+                '/api/placeholder/300/300',
+                '/api/placeholder/300/300',
+                '/api/placeholder/300/300'
+            ];
+            
+            // Add sample images
+            sampleImages.forEach(url => {
+                addImageToGallery(url);
+            });
+            
+            addImageBtn.addEventListener('click', function() {
+                const imageUrl = imageInput.value.trim();
+                if (imageUrl !== '') {
+                    addImageToGallery(imageUrl);
+                    imageInput.value = '';
+                }
+            });
+            
+            function addImageToGallery(url) {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'Gallery Image';
+                img.onerror = function() {
+                    // If image fails to load, use a placeholder
+                    this.src = '/api/placeholder/300/300';
+                };
+                
+                const removeBtn = document.createElement('div');
+                removeBtn.className = 'remove-btn';
+                removeBtn.innerHTML = '×';
+                removeBtn.addEventListener('click', function() {
+                    galleryItem.remove();
+                });
+                
+                galleryItem.appendChild(img);
+                galleryItem.appendChild(removeBtn);
+                galleryGrid.appendChild(galleryItem);
+            }
+        });
+    </script>
+</body>
+</html>
